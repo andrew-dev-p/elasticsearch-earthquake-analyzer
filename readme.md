@@ -2,6 +2,8 @@
 
 A **earthquake monitoring platform** built with **React**, **Vite**, **Express**, and **Elasticsearch**. Users can **search for earthquakes** worldwide using various criteria including **magnitude**, **location**, and **time period** — all powered by a robust **Elasticsearch backend** for fast and efficient querying.
 
+![Earthquake Watch App Showcase](app-showcase.png)
+
 ## 🔍 Description
 
 This app enables users to:
