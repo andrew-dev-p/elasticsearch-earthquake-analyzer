@@ -71,7 +71,46 @@ async function createPipeline() {
   console.log("✅ Ingest pipeline 'quake-normalizer' created");
 }
 
-createPipeline().catch(console.error);
+async function createEarthquakesIndex() {
+  const indexName = "earthquakes";
+  const exists = await client.indices.exists({ index: indexName });
+
+  if (!exists) {
+    await client.indices.create({
+      index: indexName,
+      body: {
+        mappings: {
+          properties: {
+            "@timestamp": { type: "date" },
+            coordinates: { type: "geo_point" },
+            depth: { type: "float" },
+            mag: { type: "float" },
+            place: {
+              type: "text",
+              fields: {
+                keyword: { type: "keyword" },
+              },
+            },
+            sig: { type: "short" },
+            type: { type: "keyword" },
+            url: { enabled: false },
+          },
+        },
+      },
+    });
+
+    console.log("✅ Index 'earthquakes' created with mapping");
+  } else {
+    console.log("🟢 Index 'earthquakes' already exists");
+  }
+}
+
+async function setup() {
+  await createPipeline();
+  await createEarthquakesIndex();
+}
+
+setup().catch(console.error);
 
 client
   .info()
